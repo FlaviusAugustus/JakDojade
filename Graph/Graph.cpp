@@ -10,7 +10,7 @@ void Graph::addNode(const GraphNode& node) {
 
 }
 
-void Graph::checkForConnectionDuplicates(GraphNode& node,  const Connection& connection) {
+void Graph::checkForConnectionDuplicates(GraphNode& node, const Connection& connection) {
 
     Node<Connection>* ptr = node.connections.getFirst();
     bool wasFound = false;
@@ -35,17 +35,16 @@ void Graph::addConnection(GraphNode& node, const Point& p, int w) {
 
     GraphNode* graphNode = nodes.get(node.name);
     String name = findConnection(p);
-    Connection newConnection(name, w, Point(0, 0));
-    checkForConnectionDuplicates(*graphNode, newConnection);
+    checkForConnectionDuplicates(*graphNode, Connection(name, w));
     //graphNode->connections.pushBack(newConnection);
 
 }
 
-void Graph::addConnectionFlight(const String& source, const String& dest, int weigth) {
+void Graph::addConnectionFlight(const String& source, String dest, int weigth) {
 
     GraphNode* graphNode = nodes.get(source);
     //checkForConnectionDuplicates(*graphNode, newConnection);
-    graphNode->connections.pushBack(Connection(dest, weigth, Point(-1, -1)));
+    graphNode->connections.pushBack(Connection(std::move(dest), weigth));
 
 }
 

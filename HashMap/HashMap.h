@@ -25,7 +25,7 @@ public:
 
     bool isPresent(char* hashFactor);
 
-    Vector<String> getKeys();
+    Vector<String>& getKeys();
 
     T* get(char* hashFactor);
 
@@ -99,13 +99,13 @@ bool HashMap<T>::set(char* hashFactor, T value) {
 
     if(!duplicateNode) {
 
-        buckets[index]->pushBack(HashNode(value, hashFactor));
         keys.pushBack(hashFactor);
+        buckets[index]->pushBack(HashNode(std::move(value), hashFactor));
         count++;
 
-    } else{
+    } else {
 
-        update(hashFactor, value);
+        update(hashFactor, std::move(value));
 
     }
 
@@ -168,6 +168,6 @@ template<typename T>
 size_t HashMap<T>::getCount() { return count; }
 
 template<typename T>
-Vector<String> HashMap<T>::getKeys() { return keys; }
+Vector<String>& HashMap<T>::getKeys() { return keys; }
 
 

@@ -9,7 +9,7 @@ struct HashNode {
 
     HashNode() : value(),  key() {}
 
-    HashNode(T i, char* c) : value(i), key(c) {
+    HashNode(T i, char* c) : value(std::move(i)), key(c) {
 
     }
 

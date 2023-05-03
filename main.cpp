@@ -8,7 +8,7 @@
 struct BFSNode {
 
     Point first;
-    int second;
+    int second{};
 
     BFSNode()=default;
 
@@ -24,7 +24,7 @@ class GraphConstructor {
     int sizeY;
     Graph& graph;
 
-    public:
+public:
 
     GraphConstructor(int x, int y, Graph& graph) : sizeX(x), sizeY(y), graph(graph) {
         vec = new char*[y];
@@ -232,14 +232,15 @@ class GraphConstructor {
         int flightCount;
         scanf("%d", &flightCount);
 
-        String source(32), dest(32);
+        String source(32), dest(32), w(32);
         int weigth;
 
         for(int i = 0; i < flightCount; i++) {
 
             source.read();
             dest.read();
-            scanf("%d", &weigth);
+            w.read();
+            weigth = atoi(w);
 
             graph.addConnectionFlight(source, dest, weigth);
 
@@ -247,10 +248,7 @@ class GraphConstructor {
 
     }
 
-
 };
-
-
 
 
 void dijkstraPrioQueue(Graph& graph, const String& source, HashMap<String>& path, PriorityQueueDijkstra& pq) {
@@ -268,11 +266,12 @@ void dijkstraPrioQueue(Graph& graph, const String& source, HashMap<String>& path
 
     }
 
-    pq.push(DijkstraNode(source, 0));
+    pq.push(std::move(DijkstraNode(source, 0)));
+    DijkstraNode currentNode;
 
     while(!pq.empty()) {
 
-        DijkstraNode currentNode = pq.top();
+        currentNode = pq.top();
         pq.pop();
 
         if(graph.nodes.get(currentNode.name)->visited) continue;
@@ -286,7 +285,7 @@ void dijkstraPrioQueue(Graph& graph, const String& source, HashMap<String>& path
 
                 graph.nodes.get(connection->data.name)->weigth = dist;
                 *path.get(connection->data.name) = currentNode.name;
-                pq.push(DijkstraNode(connection->data.name, graph.nodes.get(connection->data.name)->weigth));
+                pq.push(std::move(DijkstraNode(connection->data.name, graph.nodes.get(connection->data.name)->weigth)));
 
             }
         }
@@ -380,40 +379,40 @@ int main() {
 
     graphConstructor.createGraph();
 
-   int queryCount;
-   scanf("%d", &queryCount);
+    int queryCount;
+    scanf("%d", &queryCount);
 
-   String prevSource;
-   int queryType;
+    String prevSource;
+    int queryType;
 
-   HashMap<String> parentArray;
-   PriorityQueueDijkstra pq;
+    HashMap<String> parentArray;
+    PriorityQueueDijkstra pq;
 
-   String source(32), dest(32);
+    String source(32), dest(32);
 
-   for(int i = 0; i < queryCount; i++) {
+    for(int i = 0; i < queryCount; i++) {
 
-       source.read();
-       dest.read();
-       scanf("%d", &queryType);
+        source.read();
+        dest.read();
+        scanf("%d", &queryType);
 
-       if(!(source == prevSource) || queryType == 1) {
+        if(!(source == prevSource) || queryType == 1) {
 
-           dijkstraPrioQueue(graph, source, parentArray, pq);
+            dijkstraPrioQueue(graph, source, parentArray, pq);
 
-       }
+        }
 
-       printf("%d", graph.nodes.get(dest)->weigth);
-       if(queryType == 1) {
+        printf("%d", graph.nodes.get(dest)->weigth);
+        if(queryType == 1) {
 
-           printf(" ");
-           printPath(parentArray, source, dest);
+            printf(" ");
+            printPath(parentArray, source, dest);
 
-       }
+        }
 
-       prevSource = source;
-       printf("\n");
-   }
+        prevSource = source;
+        printf("\n");
+    }
 
     return 0;
 }

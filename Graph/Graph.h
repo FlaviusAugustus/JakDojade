@@ -14,9 +14,9 @@ class Graph {
 
     void addConnection(GraphNode& node, const Point& pos, int weigth);
 
-    void addConnectionFlight(const String& source, const String& dest, int weigth);
+    void addConnectionFlight(const String& source, String dest, int weigth);
 
-    void checkForConnectionDuplicates(GraphNode& node,  const Connection& connection);
+    void checkForConnectionDuplicates(GraphNode& node, const Connection& connection);
 
     String findConnection(const Point& pos);
 

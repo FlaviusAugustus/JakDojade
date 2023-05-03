@@ -83,7 +83,7 @@ void Vector<T>::resize(size_t newSize) {
 
     T* newBuff = new T[newSize];
 
-    for(int i = 0; i < _size; i++) { newBuff[i] = buffer[i]; }
+    for(int i = 0; i < _size; i++) { newBuff[i] = std::move(buffer[i]); }
 
     delete[] buffer;
     buffer = newBuff;
